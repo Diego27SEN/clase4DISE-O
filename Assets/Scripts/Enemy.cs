@@ -1,32 +1,19 @@
 using UnityEngine;
+using UnityEngine.AI;
 
 public class Enemy : MonoBehaviour
 {
-    public float range = 5f;
-    public float speed = 3f;
+    private NavMeshAgent agentEnemy;
 
     private Transform player;
 
     void Start()
     {
+        agentEnemy = GetComponent<NavMeshAgent>();
         player = GameObject.FindGameObjectWithTag("Player").transform;
     }
 
-    void Update()
-    {
-        if (player == null) return;
 
-        float distance = Vector3.Distance(transform.position, player.position);
-
-        if (distance <= range)
-        {
-            transform.position = Vector3.MoveTowards(
-                transform.position,
-                player.position,
-                speed * Time.deltaTime
-            );
-        }
-    }
 
     private void OnCollisionEnter(Collision collision)
     {
@@ -37,16 +24,20 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    void OnDrawGizmos()
+    private void OnDrawGizmos()
     {
-
         Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, range);
+        if (agentEnemy == null || agentEnemy.path == null) return;
 
-        if (player != null)
+        Vector3[] corners = agentEnemy.path.corners;
+
+
+        for (int i = 0; i < corners.Length - 1; i++)
         {
-            Gizmos.color = Color.yellow;
-            Gizmos.DrawLine(transform.position, player.position);
+            Gizmos.DrawLine(corners[i], corners[i + 1]);
+            Gizmos.DrawSphere(corners[i], 0.2f);
         }
+
     }
 }
+

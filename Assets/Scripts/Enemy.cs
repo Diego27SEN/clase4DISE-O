@@ -1,28 +1,33 @@
 using UnityEngine;
 using UnityEngine.AI;
 
-public class Enemy : MonoBehaviour
+public class EnemySimpleController : MonoBehaviour
 {
+    public Transform Target;
     private NavMeshAgent agentEnemy;
-
-    private Transform player;
 
     void Start()
     {
         agentEnemy = GetComponent<NavMeshAgent>();
-        player = GameObject.FindGameObjectWithTag("Player").transform;
+        Target = GameObject.FindGameObjectWithTag("Player").transform;
+
     }
 
-
-
-    private void OnCollisionEnter(Collision collision)
+    // Update is called once per frame
+    void Update()
     {
-        if (collision.gameObject.CompareTag("Player"))
+        if (Target != null && agentEnemy.isOnNavMesh)
         {
+            agentEnemy.SetDestination(Target.position);
 
-            Destroy(gameObject);
+            agentEnemy.speed = Random.Range(2f, 4f);
+            agentEnemy.acceleration = Random.Range(5f, 10f);
+            agentEnemy.stoppingDistance = Random.Range(1f, 3f);
+            agentEnemy.avoidancePriority = Random.Range(0, 99);
+            agentEnemy.angularSpeed = Random.Range(0, 120);
         }
     }
+
 
     private void OnDrawGizmos()
     {

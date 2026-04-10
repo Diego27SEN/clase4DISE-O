@@ -6,7 +6,7 @@ public class PlayerController : MonoBehaviour
 {
     public InputSystem_Actions inputs;
     private CharacterController controller;
-
+   
 
 
     public float moveSpeed = 5f;

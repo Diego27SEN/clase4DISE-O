@@ -61,11 +61,6 @@ public class EnemySpawner : MonoBehaviour
 
         currentEnemies++;
 
-        Enemy enemy = obj.GetComponent<Enemy>();
-        if (enemy != null)
-        {
-
-        }
        
     }
     public void EnemyDied()
